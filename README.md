@@ -2,6 +2,10 @@
 
 Give coding agents a shared way to check the project, complete one feature, and leave a handoff that another agent can resume. The workflow and feature list format stay the same across projects. Each project supplies its own commands, architecture rules, acceptance criteria, and initial feature data. [Learn Harness Engineering templates](https://walkinglabs.github.io/learn-harness-engineering/en/resources/templates/), [Anthropic's research on long-running agents](https://www.anthropic.com/research/effective-harnesses-for-long-running-agents).
 
+To have an agent set up the harness in an existing project, open that project and use this prompt.
+
+> Init project use instructions: https://stevwang.dev/init
+
 ## Set up a project
 
 Set up these four parts in the project root. The startup entry point can be a file or an existing project command.
@@ -52,3 +56,7 @@ The agent runs the baseline checks before editing, works on one feature, and rec
 2. Parse `feature_list.json` and check required fields, unique IDs, and valid statuses. For each seeded `done` entry, confirm which existing test or other check verifies its acceptance criteria.
 3. Run the project's full verification and write the results in the first progress entry. Rehearse a handoff with an unfinished item and confirm the next session can identify it. Confirm a failed or interrupted required check leaves that item at `todo`.
 4. If the project uses version control, commit the verified harness setup together in one local commit.
+
+## Maintain the public endpoint
+
+The Cloudflare Worker serves `main/init.md` from this repository as raw Markdown at `https://stevwang.dev/init`. To update the instructions, publish changes to [init.md](init.md) on `main`. For a Worker change, run `node --test cloudflare/worker.test.mjs` and deploy with `wrangler deploy --config cloudflare/wrangler.jsonc` from the repository root. [Cloudflare Worker routes](https://developers.cloudflare.com/workers/configuration/routing/routes/).
