@@ -15,7 +15,7 @@ export default {
 
     const upstream = await fetch(entryURL, {
       method: request.method,
-      redirect: "error",
+      redirect: "manual",
     }).catch(() => null);
 
     if (upstream?.status !== 200) {

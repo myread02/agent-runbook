@@ -9,7 +9,7 @@ test("serves the upstream Markdown directly for GET and HEAD", async (t) => {
   const markdown = "# Initialize the project\n";
   const upstream = t.mock.method(globalThis, "fetch", async (url, options) => {
     assert.equal(url, entryURL);
-    assert.equal(options.redirect, "error");
+    assert.equal(options.redirect, "manual");
     return new Response(options.method === "HEAD" ? null : markdown);
   });
 
@@ -40,4 +40,11 @@ test("returns an uncached gateway error when the upstream fails", async (t) => {
   const response = await worker.fetch(new Request(route));
   assert.equal(response.status, 502);
   assert.equal(response.headers.get("cache-control"), "no-store");
+});
+
+test("keeps upstream redirects away from clients", async (t) => {
+  t.mock.method(globalThis, "fetch", async () => Response.redirect("https://github.com/"));
+  const response = await worker.fetch(new Request(route));
+  assert.equal(response.status, 502);
+  assert.equal(response.headers.get("location"), null);
 });
