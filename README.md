@@ -6,6 +6,8 @@ To have an agent set up the harness in an existing project, open that project an
 
 > Init project use instructions: https://stevwang.dev/init
 
+The init instructions ask the agent to show the release version, UTC update time, and what changed before setup. [Release history](CHANGELOG.md).
+
 ## Set up a project
 
 Set up these four parts in the project root. The startup entry point can be a file or an existing project command.
@@ -59,4 +61,10 @@ The agent runs the baseline checks before editing, works on one feature, and rec
 
 ## Maintain the public endpoint
 
-The Cloudflare Worker serves `main/init.md` from this repository as raw Markdown at `https://stevwang.dev/init`. To update the instructions, publish changes to [init.md](init.md) on `main`. For a Worker change, run `node --test cloudflare/worker.test.mjs` and deploy with `wrangler deploy --config cloudflare/wrangler.jsonc` from the repository root. [Cloudflare Worker routes](https://developers.cloudflare.com/workers/configuration/routing/routes/).
+The Cloudflare Worker serves `main/init.md` as raw Markdown at `https://stevwang.dev/init`. To publish a new harness release:
+
+1. Update the version, UTC timestamp, change summary, and tag-pinned links in [init.md](init.md). Add the release entry to [CHANGELOG.md](CHANGELOG.md).
+2. Commit the release and push `main` and the matching version tag together. Publish a GitHub release using the changelog entry and include links to the live Cloudflare endpoint and the tagged instructions.
+3. Verify that the live endpoint returns the new release header and that the tagged template links resolve. Cloudflare picks up Markdown changes from `main`.
+
+For a Worker change, run `node --test cloudflare/worker.test.mjs` and deploy with `wrangler deploy --config cloudflare/wrangler.jsonc` from the repository root. [Cloudflare Worker routes](https://developers.cloudflare.com/workers/configuration/routing/routes/).
