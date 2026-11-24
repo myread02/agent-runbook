@@ -1,4 +1,4 @@
-const entryURL = "https://raw.githubusercontent.com/myread02/agent-runbook/main/init.md";
+const entryURL = "https://raw.githubusercontent.com/stevwang-dev/agent-runbook/main/init.md";
 
 export default {
   async fetch(request) {

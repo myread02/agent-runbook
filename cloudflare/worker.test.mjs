@@ -3,7 +3,7 @@ import { test } from "node:test";
 import worker from "./worker.mjs";
 
 const route = "https://stevwang.dev/init";
-const entryURL = "https://raw.githubusercontent.com/myread02/agent-runbook/main/init.md";
+const entryURL = "https://raw.githubusercontent.com/stevwang-dev/agent-runbook/main/init.md";
 
 test("serves the upstream Markdown directly for GET and HEAD", async (t) => {
   const markdown = "# Initialize the project\n";
